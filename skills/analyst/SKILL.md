@@ -59,21 +59,46 @@ Identify 5–10 publicly traded companies whose earnings (not just margins — a
 - Pure-play (high exposure) vs. partial (diversified business with one exposed segment)
 - At least one cited source (URL + access date + key finding)
 
-### 3. Catalysts
+### 3. TAM sizing (bottoms-up)
+For the top 2–3 candidates, do a bottoms-up TAM estimate — not a Gartner quote. Build it from:
+- Who are the customers? How many potential buyers exist (company count, user count, seat count)?
+- What does each buyer spend today vs. what they could spend?
+- What's the realistic penetration rate at the company's current trajectory?
+
+Show the math: `[addressable units] × [revenue per unit] = TAM`. Then compare TAM to the company's current revenue to get the "penetration rate" (like TEAM: "Jira has ~3-4mn users out of a 21mn total market, plus 80mn broader IT workers"). A low penetration rate against a well-defined TAM is a growth duration argument.
+
+### 4. What the market is missing
+The single most important non-consensus claim. What does the market underappreciate, mismodel, or fail to give credit for? Examples:
+- "The market is valuing MSFT as if Azure contributes zero margin — by FY23, Azure alone could drive 40%+ operating margins"
+- "The market treats customer concentration as a headwind, but the top-10 customer percentage declining from 32% to 13% makes FY19+ a tailwind, not a headwind"
+- "The market prices TEAM at a discount on FCF but misses that its 30%+ FCF margin is structurally higher than the SaaS average because of the zero sales-force go-to-market model"
+
+This section is the alpha claim. It should be specific, falsifiable, and tied to a specific metric or milestone that will reveal whether it's right.
+
+### 5. Customer and unit economics
+For each top candidate, report:
+- **Net revenue retention / NRR** (or dollar-based retention): what existing customers spend over time
+- **Gross revenue retention**: churn rate on existing customers
+- **LTV/CAC** if disclosable: customer lifetime value to acquisition cost ratio
+- **Average revenue per user (ARPU)** and its trajectory
+
+These metrics distinguish "good company" from "good growth story." A 120%+ NRR means expansion pays for churn. A high LTV/CAC means the company can grow without margin pressure. Cite earnings calls or 10-K for each figure.
+
+### 6. Catalysts
 For the candidates, identify near-term events that could validate or invalidate the thesis:
 - Upcoming earnings, product launches, regulatory decisions, M&A rumors — with dates if found in your search
 - Whether the catalyst is bullish or bearish for the thesis
 - Source for each catalyst (URL + access date)
 
-### 4. Disclosure risks
+### 7. Disclosure risks
 Material risks disclosed in recent 10-K/10-Q/8-K filings that could break the thesis. Cite the specific filing (company, form type, date filed, URL or SEC EDGAR link).
 
 **Required check — demand-side AI compression**: when the company's *customers* also adopt AI and reduce headcount or automate workflows, do they buy fewer software seats, reduce usage tiers, or renegotiate contracts? This is the mirror image of the efficiency thesis: if AI cuts costs for software companies, it also cuts costs for their customers — which may reduce the software revenue base. For each candidate, search for evidence of this risk: customer churn data, seat-count disclosures, usage-based revenue trends, or commentary from recent earnings calls about pricing pressure. If this risk is material, quantify its potential impact on revenue growth.
 
-### 5. Why not X?
+### 8. Why not X?
 Companies that *look* like good longs on the thesis but aren't — and the specific reason (crowded, wrong segment, structural headwind, better alternatives exist). Helps the PM avoid false positives in the long book.
 
-### 6. Sources
+### 9. Sources
 A consolidated reference list of all URLs cited in this report. Format each entry as:
 > [Source title or description] — <URL> (accessed YYYY-MM-DD)
 

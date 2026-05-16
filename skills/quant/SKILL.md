@@ -40,6 +40,8 @@ Translate the thesis into 2–4 quantitative factors that should outperform if t
 - "Low P/E + dividend yield > 4% + buyback yield > 3%" for value-rotation theses
 - "Pricing power: gross margin expanding YoY + revenue growth > inflation" for inflation-persistence theses
 
+For SaaS and software theses, include the **Rule of 40** (revenue growth % + FCF margin %) as a required factor. The Rule of 40 above 40 is the threshold for "best-of-breed" SaaS; above 50 is elite. Compute it for each candidate and compare to the sector average. A high Rule of 40 justifies premium multiples; a low one does not.
+
 Explain *why* each factor expresses the thesis.
 
 ### 2. Screen results
@@ -68,7 +70,23 @@ If EPS is negative or the company is pre-profit, substitute a revenue or gross p
 
 **The upside calculation is the thesis in quantitative form.** Names with the highest implied upside, grounded in realistic (peer-evidenced) efficiency assumptions, are the PM's best candidates.
 
-### 2b. Index benchmark check
+### 2b. Peer comp table
+Build a comparison table of 5–8 peer companies (same sector, similar growth profile) with these columns:
+
+| Ticker | Revenue Growth (fwd) | Gross Margin | FCF Margin | Rule of 40 | EV/Rev (fwd) | P/E (fwd) | EV/FCF |
+|---|---|---|---|---|---|---|---|
+
+For each candidate from §2, show its **premium or discount vs. the peer group median** for each multiple. Express it as a percentage ("TWLO trades at 20% discount to SaaS comps on EV/Rev"). This is the core of the valuation argument — a discount to comps with superior growth is a buy; a premium to comps with equal growth is a warning.
+
+### 2c. Re-rating conditions
+The multiple a stock trades at is not fixed — it expands when uncertainty resolves. For each top candidate, name **2–3 specific, quantitative conditions** that would cause the market to award a higher multiple. Examples from real reports:
+- "Clear path to $1bn in revenues" → market re-rates from 5x to 8x EV/Rev
+- "FCF break-even reached" → removes terminal-value risk, unlocks profitability premium
+- "Top-10 customer concentration drops below 15%" → removes customer concentration discount
+
+State: if condition X is met by [date], what multiple does the stock deserve, and what price does that imply? This is the mechanism behind the price target, not just the target itself.
+
+### 2d. Index benchmark check
 What would IGV (iShares Expanded Tech-Software ETF) or the relevant sector index have returned if the thesis played out? Compare the implied upside of the top 3 candidates vs. the index to make the case for single-name concentration. If the index captures 80%+ of the upside with less risk, flag this explicitly.
 
 ### 3. Technicals
