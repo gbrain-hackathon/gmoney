@@ -10,7 +10,7 @@ metadata:
   hermes:
     tags: [Finance, Macro, Rates, FX, Inflation, Growth, Sectors, ETFs]
     category: gmoney
-    related_skills: [analyst, quant, pm, risk, basket-builder]
+    related_skills: [analyst, quant, pm, hedger, risk, basket-builder]
     requires_toolsets: [web]
 ---
 

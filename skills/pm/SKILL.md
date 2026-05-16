@@ -10,7 +10,7 @@ metadata:
   hermes:
     tags: [Finance, Portfolio, Basket, Weights, Construction, Synthesis]
     category: gmoney
-    related_skills: [analyst, quant, macro, risk, basket-builder]
+    related_skills: [analyst, quant, macro, hedger, risk, basket-builder]
     requires_toolsets: []
 ---
 
