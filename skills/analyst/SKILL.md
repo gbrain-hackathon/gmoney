@@ -36,10 +36,26 @@ A markdown report with these sections:
 ### 1. Thesis interpretation
 Restate the thesis in 1–2 sentences as you understand it. If the thesis is ambiguous, state the most plausible interpretation and flag the ambiguity.
 
-### 2. Candidate universe
-Identify 5–10 publicly traded companies whose revenue, margins, or strategic position would benefit materially if the thesis plays out. Long-only — only include companies you would want to own, not companies that would be hurt. For each:
+### 2. Sector vs. company framing (answer this before listing names)
+State explicitly: is this thesis a **sector trade** (all companies in the sector benefit roughly equally, making an index ETF like IGV the natural vehicle) or a **company-specific trade** (a subset of companies has disproportionate upside vs. peers)?
+
+If company-specific, identify the **differentiating factor** — what makes certain names better positioned than the sector average? Common reasons: lagging peers in cost efficiency (larger gap to close), unique pricing power, higher operating leverage, or a product mix that benefits asymmetrically. Name the factor now — the PM will use it to weigh positions.
+
+If you cannot identify a compelling differentiating factor beyond "the sector is cheap," say so explicitly and recommend the index vehicle instead.
+
+### 2a. Peer benchmarks (do this before naming candidates)
+Identify **2–3 companies in the same sector that have ALREADY realized AI-driven efficiency gains** — margin expansion or EPS acceleration attributable to headcount efficiency, AI tooling, or automation. For each peer:
+- Before/after gross margin or operating margin (specific quarters, sourced)
+- What specific efficiency initiative drove the gain (headcount reduction, AI tooling, infrastructure, etc.)
+- How long it took from initiative to visible margin impact
+
+These peers are the **evidence base** that the thesis is achievable. They are not necessarily investment candidates — the candidates are names that have *not yet* realized these gains but are positioned to.
+
+### 2b. Candidate universe
+Identify 5–10 publicly traded companies whose earnings (not just margins — also revenue sustainability) would benefit materially if the thesis plays out. Long-only — only include companies you would want to own. For each:
 - Ticker and full company name
 - 2–3 sentence explanation of how this company benefits from the thesis, with specific revenue/margin/segment data from your research
+- **Why this name and not the sector ETF**: what is disproportionate about this company's upside vs. peers? If you cannot answer this, flag the name as "sector-beta exposure only"
 - Pure-play (high exposure) vs. partial (diversified business with one exposed segment)
 - At least one cited source (URL + access date + key finding)
 
@@ -51,6 +67,8 @@ For the candidates, identify near-term events that could validate or invalidate 
 
 ### 4. Disclosure risks
 Material risks disclosed in recent 10-K/10-Q/8-K filings that could break the thesis. Cite the specific filing (company, form type, date filed, URL or SEC EDGAR link).
+
+**Required check — demand-side AI compression**: when the company's *customers* also adopt AI and reduce headcount or automate workflows, do they buy fewer software seats, reduce usage tiers, or renegotiate contracts? This is the mirror image of the efficiency thesis: if AI cuts costs for software companies, it also cuts costs for their customers — which may reduce the software revenue base. For each candidate, search for evidence of this risk: customer churn data, seat-count disclosures, usage-based revenue trends, or commentary from recent earnings calls about pricing pressure. If this risk is material, quantify its potential impact on revenue growth.
 
 ### 5. Why not X?
 Companies that *look* like good longs on the thesis but aren't — and the specific reason (crowded, wrong segment, structural headwind, better alternatives exist). Helps the PM avoid false positives in the long book.

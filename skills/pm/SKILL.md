@@ -28,12 +28,13 @@ You MUST return a single fenced JSON code block — no prose before or after —
       "name": "string (full company or fund name)",
       "weight": 0,
       "memo": {
-        "thesis_fit": "string (2-3 paragraphs: how this position directly expresses the investment thesis, including the specific sub-theme it captures and why this vehicle is better than alternatives)",
+        "thesis_fit": "string (2-3 paragraphs: how this position directly expresses the investment thesis, including the specific sub-theme it captures and why this vehicle is better than alternatives — including why it beats just buying the sector index)",
         "fundamental_case": "string (2-3 paragraphs: revenue trajectory, margin profile, competitive moat, balance sheet, key financial metrics with specific numbers from the analyst reports)",
+        "earnings_path": "string (1-2 paragraphs: the explicit earnings case — current EPS or earnings proxy, the specific efficiency gain that drives margin expansion (anchored to a peer company that has already achieved it), resulting target EPS, the historical P/E context (current vs. 5-yr average), target P/E applied, implied price target $H, current price, and % upside. If EPS is negative, use gross profit or revenue multiple and explain.)",
         "quant_signals": "string (1-2 paragraphs: factor exposures, valuation vs. historical and peers, technical setup from the quant report)",
         "macro_context": "string (1-2 paragraphs: which macro conditions support this position, what macro breaks it, from the macro report)",
         "catalysts": "string (1 paragraph: 2-3 specific near-term events, dates if known, and whether each is binary or gradual)",
-        "key_risks": "string (1 paragraph: the 2-3 risks most likely to make this idea wrong, not a generic list)"
+        "key_risks": "string (1 paragraph: the 2-3 risks most likely to make this idea wrong — must include revenue risk if customers also adopt AI and reduce seats)"
       }
     }
   ],
@@ -45,6 +46,7 @@ You MUST return a single fenced JSON code block — no prose before or after —
 
 ## Construction guidelines
 
+- **Sector vs. company trade — state this first.** Before naming positions, state in the `narrative` whether this is a sector-wide trade ("all software companies benefit, and the best vehicle might be IGV") or a company-specific trade ("these 3 names have disproportionate upside vs. the sector index"). If company-specific, explain in 1–2 sentences *why* these 3 names outperform IGV — what is the disproportionate factor (unrealized efficiency runway, operating leverage, unique pricing power)? Ruling out the index is not optional: if the analyst evidence doesn't support single-name alpha, say so and recommend the index instead.
 - **Exactly 3 positions.** This is not a diversified basket — it is a concentrated, high-conviction expression of the thesis. Each idea must be the single best way to capture a distinct sub-theme within the thesis.
 - **Weights reflect conviction**: the strongest idea gets the most weight. Typical split is 40/35/25 or 45/35/20 — never equal thirds unless conviction is genuinely equal.
 - **Each memo must be substantive.** Every field requires specific data points and named evidence from the analyst reports. No generic phrases ("strong fundamentals", "well-positioned") — every claim must reference something a specific analyst said or a specific number.

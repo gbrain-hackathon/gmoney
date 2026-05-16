@@ -45,10 +45,31 @@ Explain *why* each factor expresses the thesis.
 ### 2. Screen results
 Apply your screens and identify 5–10 candidate tickers. For each:
 - Ticker, name, market cap
-- Key factor values (P/E, P/S, gross margin, revenue growth) — use specific numbers pulled from your research, with a citation after each figure
+- Key factor values (P/E, P/S, gross margin, operating margin, forward EPS) — use specific numbers pulled from your research, with a citation after each figure
 - One-line factor profile fit
 
 Example citation format: `Gross margin 68% [Macrotrends, 2025-Q1](URL)`
+
+### 2a. Earnings path and price target (required for top 3 candidates)
+For each of the top 3 names from your screen, construct the explicit earnings case:
+
+| Field | What to fill in |
+|---|---|
+| Current trailing/forward EPS | Sourced figure |
+| Peer-benchmarked margin expansion | How much margin could expand if AI efficiencies materialize — anchored to what comparable companies have already achieved (cite the peer and their before/after) |
+| Target EPS (if expansion materializes) | Current EPS adjusted for the margin improvement |
+| Current P/E vs. 5-yr historical average P/E | Both figures sourced — is the stock cheap, fair, or expensive vs. its own history? |
+| Target P/E at which thesis is "fairly valued" | Your estimate with justification (reversion to historical average, sector mean, etc.) |
+| Implied price target $H | Target EPS × target P/E |
+| Current price | Sourced |
+| Implied upside | ($H − current) / current, as a percentage |
+
+If EPS is negative or the company is pre-profit, substitute a revenue or gross profit multiple and explain why it's the right yardstick.
+
+**The upside calculation is the thesis in quantitative form.** Names with the highest implied upside, grounded in realistic (peer-evidenced) efficiency assumptions, are the PM's best candidates.
+
+### 2b. Index benchmark check
+What would IGV (iShares Expanded Tech-Software ETF) or the relevant sector index have returned if the thesis played out? Compare the implied upside of the top 3 candidates vs. the index to make the case for single-name concentration. If the index captures 80%+ of the upside with less risk, flag this explicitly.
 
 ### 3. Technicals
 For the top candidates, comment on:

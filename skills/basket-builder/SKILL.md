@@ -53,8 +53,18 @@ gbrain.get(slug=f"theses/{slug}")
 
 If it exists, this is a re-run. Read the prior compiled truth and tell the user verbatim: "I have a prior version of this thesis in the brain from `<created date>`. The compiled truth says: `<one-line summary>`. Should I update it in place, or start a new thesis with a different slug?" Wait for explicit user response. If they say "new thesis", change the slug (append `-v2` or similar) and proceed as if no prior exists.
 
-### Phase 0 — Capture the thesis
+### Phase 0 — Capture the thesis and framing
 Restate the thesis back to the user in one sentence and confirm. Persist the canonical thesis string; every sub-skill receives it verbatim.
+
+Then ask the user to confirm **one framing question** before running research:
+
+> "Is this a **sector trade** (you believe software broadly wins, and the index — e.g., IGV — is a fine vehicle) or a **company-specific trade** (you believe specific names have disproportionate upside vs. the sector because they haven't yet realized AI efficiency gains their peers already have)?"
+
+If company-specific: ask which companies, if any, the user already has in mind as candidate laggards. Add these as `tickers_of_interest` in the thesis page.
+
+This answer shapes how every sub-skill frames its output: the analyst will look for peer benchmarks and disproportionate candidates; the quant will compute per-name price targets vs. the index; the PM will justify the basket vs. IGV; and the risk officer will check whether the upside is truly company-specific or just sector-beta.
+
+If the user explicitly says "sector trade," the pipeline still runs fully — but the PM should lean toward recommending the index ETF as the primary vehicle unless the analyst and quant find compelling single-name concentration.
 
 Then persist the thesis to GBrain. Render the page using the template at `docs/gbrain/schemas/thesis.template.md`. Fill in `slug`, `horizon`, `sectors`, `tickers_of_interest`, `disconfirming_signals`. Set `status: active`, `last_pm_run: null`, `last_risk_run: null`. Write the canonical thesis sentence into the `title` field and the "Compiled truth" body section.
 

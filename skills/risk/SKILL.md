@@ -31,6 +31,10 @@ A markdown report with these sections:
 ### 1. Counter-thesis
 The 2–3 strongest arguments that the thesis is wrong, presented as a real bear case would present them. Be specific — name the mechanism, not the vibe. "Macro headwinds" is empty; "tightening credit conditions reduce capex from mid-market customers, who are 40% of revenue" is real.
 
+**Required check — demand-side AI compression**: if the thesis is that software companies save costs through AI, the bear case must address whether those same AI efficiencies reduce the *customers'* need for software. If customers cut headcount via AI, they may cut software seats. If they automate workflows, they may not expand usage. Quantify this risk where possible: what percentage of revenue is seat-based vs. consumption-based vs. enterprise contract? Has the company seen NRR pressure from customers downsizing? This is the internal contradiction in any AI efficiency thesis applied to software — the same force that helps margins may compress the revenue baseline.
+
+**Required check — sector vs. company alpha**: could buying IGV (or the relevant sector ETF) have captured the same upside with less single-name risk? If the thesis is fundamentally "software earnings go up due to AI," the default vehicle is the index. The basket only earns its concentration premium if specific names have demonstrably *more* earnings upside than the sector average — because they haven't yet realized efficiency gains their peers already have. If that disproportionality isn't clearly established in the analyst and quant reports, flag it: the PM may be running sector risk disguised as stock selection.
+
 ### 2. Concentration risks
 Where is the basket overexposed?
 - Sector concentration (more than X% in any GICS sector)
