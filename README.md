@@ -23,8 +23,6 @@ No application code. Each `SKILL.md` is a Hermes skill (frontmatter + body). The
 ## Install
 
 ```bash
-hermes plugins install gbrain-hackathon/gmoney     # GitHub shorthand
-# or
 hermes plugins install https://github.com/gbrain-hackathon/gmoney.git
 ```
 
