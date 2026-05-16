@@ -1,0 +1,18 @@
+# gmoney-quant profile
+#
+# Refinement knobs for this skill. Hermes does not currently apply per-skill
+# overrides natively — see scripts/install.py and README "Profiles" for how
+# this is consumed today. Treat each value as the recommended setting when
+# the orchestrator hands control to this role.
+
+role: quant
+model: anthropic/claude-opus-4.6
+provider: openrouter
+reasoning_effort: high
+max_tokens: 6144
+toolsets: [web]
+notes: |
+  Factor mapping + screen. Number-heavy: factor definitions, screened
+  candidates with specific factor values, technicals. Web is needed for
+  market data and screening inputs. Keep reasoning high so factor design
+  isn't generic ("low P/E + dividend") but tied to the thesis mechanism.

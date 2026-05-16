@@ -4,13 +4,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-The **gmoney** skill bundle for [Hermes Agent](https://github.com/NousResearch/hermes-agent), under `skills/gmoney/`. No application code, no package manager, no build step. Every file is markdown. The Hermes deployment is consumed downstream (see README for installation).
+The **gmoney** skill bundle for [Hermes Agent](https://github.com/NousResearch/hermes-agent), under `skills/gmoney/`. No application code, no package manager, no build step — except a small Python install script. Every skill is markdown plus a YAML profile sidecar. The Hermes deployment is consumed downstream (see README for installation).
+
+## Layout
+
+```
+hermes.yaml                 # bundle manifest (canonical descriptor)
+scripts/install.py          # installer — wires skills_root into a Hermes config
+skills/gmoney/
+  DESCRIPTION.md            # category descriptor
+  <skill>/
+    SKILL.md                # frontmatter + prompt body (the actual skill)
+    profile.yaml            # per-role tuning knobs (model, reasoning, etc.)
+```
 
 ## Skill structure
 
-Hermes skills are directory bundles, not flat files. Each leaf directory has a `SKILL.md` with YAML frontmatter (`name`, `title`, `description`, `version`, `metadata.hermes.tags`, `metadata.hermes.related_skills`, `metadata.hermes.requires_toolsets`) followed by the prompt body. Categories (`skills/gmoney/`) have a `DESCRIPTION.md` with just a `description` field.
+Hermes skills are directory bundles, not flat files.
 
-The pipeline:
+- `SKILL.md` — YAML frontmatter (`name`, `title`, `description`, `version`, `metadata.hermes.{tags, category, related_skills, requires_toolsets}`) followed by the prompt body.
+- `profile.yaml` — sidecar with `model`, `provider`, `reasoning_effort`, `max_tokens`, `toolsets`, `notes`. Hermes does NOT currently apply these per-skill; they document intent and are surfaced by `scripts/install.py --print-profiles`. Treat them as the recommended runtime settings for each role.
+- Category dirs (`skills/gmoney/`) have a `DESCRIPTION.md` with just a `description` field.
+
+## The pipeline
 
 - `gmoney-analyst`, `gmoney-quant`, `gmoney-macro` — three independent research roles, each producing a markdown report from a thesis.
 - `gmoney-pm` — receives all three reports plus the thesis; emits a single fenced JSON code block (positions + narrative). The schema is in `gmoney-pm/SKILL.md`.
@@ -19,9 +35,11 @@ The pipeline:
 
 ## Working in this repo
 
-- **Editing a skill is editing the markdown body.** Preserve the frontmatter — `name` must match the leaf directory, and `related_skills` cross-references should stay consistent across the bundle.
-- **Adding a skill** means a new `skills/gmoney/gmoney-<name>/SKILL.md` plus an update to `gmoney-basket-builder/SKILL.md` if the new skill is part of the pipeline, plus updates to every other skill's `related_skills`.
-- **No tests / no lint / no build.** Validation is by running the bundle through Hermes (or eyeballing the YAML).
+- **Editing a skill's behavior is editing `SKILL.md`.** Preserve the frontmatter — `name` must match the leaf directory, and `related_skills` cross-references should stay consistent across the bundle.
+- **Tuning a skill's runtime settings is editing `profile.yaml`.** Keep these separate from `SKILL.md` so the prompt and the tuning knobs evolve independently.
+- **Adding a skill** means a new `skills/gmoney/gmoney-<name>/SKILL.md` + `profile.yaml`, an entry in `hermes.yaml`, an update to `gmoney-basket-builder/SKILL.md` if the new skill is part of the pipeline, and updates to every other skill's `related_skills`.
+- **`hermes.yaml`** is the manifest. It's read by `scripts/install.py` and serves as the canonical pipeline / install descriptor. Hermes itself does not read it.
+- **No tests / no lint / no build.** Validation is running `python3 scripts/install.py --print-profiles` (smoke-tests YAML parsing) plus running the bundle through Hermes.
 - **Naming**: every skill in this bundle is prefixed `gmoney-` so it's unambiguous when the agent searches across categories. Leaf directory name must equal `metadata.hermes.name`.
 
 ## What's no longer here

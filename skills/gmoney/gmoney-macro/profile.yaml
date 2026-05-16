@@ -1,0 +1,18 @@
+# gmoney-macro profile
+#
+# Refinement knobs for this skill. Hermes does not currently apply per-skill
+# overrides natively — see scripts/install.py and README "Profiles" for how
+# this is consumed today. Treat each value as the recommended setting when
+# the orchestrator hands control to this role.
+
+role: macro
+model: anthropic/claude-opus-4.6
+provider: openrouter
+reasoning_effort: high
+max_tokens: 6144
+toolsets: [web]
+notes: |
+  Regime mapping (rates / FX / inflation / growth) and sector / country
+  rotation. Web is needed because the regime call depends on current data
+  (Fed funds, CPI, ISM). High reasoning so the macro story is specific
+  to the thesis rather than a kitchen-sink list of risks.

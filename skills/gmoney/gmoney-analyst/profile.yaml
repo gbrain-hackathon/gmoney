@@ -1,0 +1,18 @@
+# gmoney-analyst profile
+#
+# Refinement knobs for this skill. Hermes does not currently apply per-skill
+# overrides natively — see scripts/install.py and README "Profiles" for how
+# this is consumed today. Treat each value as the recommended setting when
+# the orchestrator hands control to this role.
+
+role: analyst
+model: anthropic/claude-opus-4.6
+provider: openrouter
+reasoning_effort: high
+max_tokens: 8192
+toolsets: [web]
+notes: |
+  Fundamental research: identifying non-obvious publicly-traded names tied
+  to a thesis, plus catalysts and disclosure risks. Reasoning-heavy — bias
+  toward Opus and high reasoning effort. Output is long-form markdown, so
+  max_tokens is generous. Web access required for filings and news.

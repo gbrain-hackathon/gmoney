@@ -1,0 +1,19 @@
+# gmoney-risk profile
+#
+# Refinement knobs for this skill. Hermes does not currently apply per-skill
+# overrides natively — see scripts/install.py and README "Profiles" for how
+# this is consumed today. Treat each value as the recommended setting when
+# the orchestrator hands control to this role.
+
+role: risk
+model: anthropic/claude-opus-4.6
+provider: openrouter
+reasoning_effort: xhigh
+max_tokens: 6144
+toolsets: []
+notes: |
+  Adversarial red-team. The whole point is to find what the PM missed,
+  which rewards maximum reasoning effort. No tools — only the thesis and
+  the basket. Ends with a Strong / Questionable / Weak verdict, so the
+  model needs room to reason about counter-theses, concentration, and
+  thesis-killers before committing.
