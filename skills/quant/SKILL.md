@@ -10,7 +10,7 @@ metadata:
   hermes:
     tags: [Finance, Quant, Factors, Screen, Backtest, Technicals, Valuation]
     category: gmoney
-    related_skills: [analyst, macro, pm, risk, basket-builder]
+    related_skills: [analyst, macro, pm, hedger, risk, basket-builder]
     requires_toolsets: [web]
 ---
 

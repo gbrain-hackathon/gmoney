@@ -10,7 +10,7 @@ metadata:
   hermes:
     tags: [Finance, Equity, Stocks, Investment, Tickers, Catalysts, Filings, Analyst]
     category: gmoney
-    related_skills: [quant, macro, pm, risk, basket-builder]
+    related_skills: [quant, macro, pm, hedger, risk, basket-builder]
     requires_toolsets: [web]
 ---
 

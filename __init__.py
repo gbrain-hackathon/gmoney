@@ -1,8 +1,8 @@
 """gmoney — multi-agent investment-thesis analysis plugin.
 
-Registers six skills under the `gmoney:` namespace. ``basket-builder`` is the
-orchestrator; it sequences ``analyst``, ``quant``, ``macro``, ``pm``, ``risk``
-end-to-end.
+Registers seven skills under the `gmoney:` namespace. ``basket-builder`` is the
+orchestrator; it sequences ``analyst``, ``quant``, ``macro``, ``pm``, ``hedger``,
+``risk`` end-to-end.
 """
 
 from __future__ import annotations
@@ -13,7 +13,7 @@ from pathlib import Path
 PLUGIN_ROOT = Path(__file__).resolve().parent
 SKILLS_DIR = PLUGIN_ROOT / "skills"
 
-SKILLS = ["analyst", "quant", "macro", "pm", "risk", "basket-builder"]
+SKILLS = ["analyst", "quant", "macro", "pm", "hedger", "risk", "basket-builder"]
 
 # Pull the description from each SKILL.md's frontmatter so the plugin listing
 # and the prompt body can never drift. Simple regex avoids a yaml import.
