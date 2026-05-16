@@ -2,53 +2,28 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Commands
+## What this repo is
 
-Package manager is **Bun** (see `bun install` in README), but scripts use `next` directly so `npm`/`pnpm` also work.
+The **gmoney** skill bundle for [Hermes Agent](https://github.com/NousResearch/hermes-agent), under `skills/gmoney/`. No application code, no package manager, no build step. Every file is markdown. The Hermes deployment is consumed downstream (see README for installation).
 
-```bash
-bun install
-bun run dev         # next dev — http://localhost:3000
-bun run build       # next build
-bun run start       # next start (after build)
-bun run typecheck   # tsc --noEmit
-```
+## Skill structure
 
-There is no test suite, no linter configured, and no formatter. `typecheck` is the only static check.
+Hermes skills are directory bundles, not flat files. Each leaf directory has a `SKILL.md` with YAML frontmatter (`name`, `title`, `description`, `version`, `metadata.hermes.tags`, `metadata.hermes.related_skills`, `metadata.hermes.requires_toolsets`) followed by the prompt body. Categories (`skills/gmoney/`) have a `DESCRIPTION.md` with just a `description` field.
 
-`.env.local` must contain `ANTHROPIC_API_KEY`. Copy from `.env.local.example`.
+The pipeline:
 
-## Architecture
+- `gmoney-analyst`, `gmoney-quant`, `gmoney-macro` — three independent research roles, each producing a markdown report from a thesis.
+- `gmoney-pm` — receives all three reports plus the thesis; emits a single fenced JSON code block (positions + narrative). The schema is in `gmoney-pm/SKILL.md`.
+- `gmoney-risk` — receives the thesis and the basket; emits a markdown critique ending in a Strong / Questionable / Weak verdict.
+- `gmoney-basket-builder` — meta-skill the agent loads first; sequences the other five and tracks progress via the `todo` toolset.
 
-Thesis-in, basket-out pipeline. Six agents run in a fixed sequence orchestrated by `lib/agents/orchestrator.ts`:
+## Working in this repo
 
-1. `POST /api/thesis` (`app/api/thesis/route.ts`) creates a `pending` thesis JSON and **fire-and-forgets** `runPipeline(id)`, returning the ID immediately.
-2. Orchestrator transitions through statuses (`analyzing` → `synthesizing` → `reviewing` → `complete`), persisting after each step.
-3. analyst/quant/macro run in **parallel** (`Promise.all`), each calling Anthropic with its own skill prompt.
-4. PM agent (`lib/agents/pm.ts`) synthesizes their reports into a typed `Basket` using `output_config.format` with a JSON schema — this is the only structured-output call.
-5. Risk agent red-teams the basket.
-6. Client (`app/thesis/[id]/page.tsx`) polls `GET /api/thesis/[id]` every 3s until status is `complete` or `error`.
+- **Editing a skill is editing the markdown body.** Preserve the frontmatter — `name` must match the leaf directory, and `related_skills` cross-references should stay consistent across the bundle.
+- **Adding a skill** means a new `skills/gmoney/gmoney-<name>/SKILL.md` plus an update to `gmoney-basket-builder/SKILL.md` if the new skill is part of the pipeline, plus updates to every other skill's `related_skills`.
+- **No tests / no lint / no build.** Validation is by running the bundle through Hermes (or eyeballing the YAML).
+- **Naming**: every skill in this bundle is prefixed `gmoney-` so it's unambiguous when the agent searches across categories. Leaf directory name must equal `metadata.hermes.name`.
 
-Errors at any stage write `status: 'error'` + `error: <message>`; the catch is wired in `app/api/thesis/route.ts:27`.
+## What's no longer here
 
-### Agent prompts live in `skills/*.md`
-
-`lib/agents/base.ts` loads the matching skill markdown at runtime from `process.cwd()/skills/<name>.md`, caches it in an in-process `Map`, and passes it as the `system` block (with `cache_control: ephemeral` for prompt caching). **Tuning agent behavior is a markdown edit, not a code change** — `analyst.ts`, `quant.ts`, `macro.ts` are thin wrappers around `runAgent()`.
-
-Model is `claude-opus-4-7` (exported as `MODEL` from `base.ts`) with `thinking: { type: 'adaptive' }`.
-
-### Persistence
-
-Filesystem JSON only. `lib/store.ts` writes one file per thesis to `data/theses/<id>.json` (gitignored). There is no database, no queue, no cache layer. `Thesis` shape is defined in `lib/types.ts`.
-
-### Tools are stubs
-
-Every file in `lib/tools/` (prices, news, filings, tickers, macro) is `throw new Error('not implemented')`. Agents currently reason from training data alone. Wiring real providers is a known TODO.
-
-## Important caveats
-
-- **Vercel deployment will break the pipeline.** The fire-and-forget `Promise` in `app/api/thesis/route.ts` relies on the Node process staying alive past the response. On Vercel the function exits when the response is sent. To deploy, wrap the call in `waitUntil` from `next/server`, or move to a queue. README documents this.
-- **Skills are filesystem reads, not imports.** Any bundler that strips non-imported files will drop `skills/*.md` from the deployed bundle. Move into `public/` or import as strings if this becomes a problem.
-- **PM agent does not use `runAgent`.** It reads its skill directly and calls `client.messages.create` with `output_config.format` for structured JSON. If you change the `system` block or caching strategy in `base.ts`, mirror it in `pm.ts`.
-- **Path alias `@/*` maps to repo root** (see `tsconfig.json`), so `@/lib/store` resolves to `./lib/store`.
-- **Next.js 15 + React 19, App Router.** Dynamic route params are `Promise<{ id: string }>` and must be `await`ed (see `app/api/thesis/[id]/route.ts`, `app/thesis/[id]/page.tsx`).
+Earlier git history has a Next.js orchestrator that called Anthropic directly via `lib/agents/*` and persisted theses to `data/theses/*.json`. That entire stack was removed once Hermes became the only consumer — git history is the recovery path if it's needed again.

@@ -1,8 +1,2 @@
-node_modules/
-.next/
-.env.local
-.env*.local
-*.log
 .DS_Store
-data/theses/
-data/runs/
+*.log
