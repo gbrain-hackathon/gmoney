@@ -28,9 +28,9 @@ Hermes plugins live at `~/.hermes/plugins/<plugin_name>/` once installed (`herme
 
 - `gmoney:analyst`, `gmoney:quant`, `gmoney:macro` — three independent research roles, each producing a markdown report from a thesis. The orchestrator dispatches them **in parallel**.
 - `gmoney:pm` — receives all three reports plus the thesis; emits a single fenced JSON code block (positions + narrative). Schema is in `skills/pm/SKILL.md`.
-- `gmoney:hedger` — **optional** phase. Receives the thesis and basket; queries Kalshi / Polymarket and returns a markdown hedge memo. The orchestrator may skip it (user opted out, or single-name idiosyncratic thesis with no hedge surface).
-- `gmoney:risk` — receives the thesis and the basket, plus the hedge memo *only if* the hedger phase ran; emits a markdown critique ending in a Strong / Questionable / Weak verdict.
-- `gmoney:basket-builder` — orchestrator the agent loads first; sequences the other six and tracks progress via the `todo` toolset.
+- `gmoney:hedger` — **currently disabled**. The skill is still registered for direct invocation, but `gmoney:basket-builder` skips Phase 3 because Kalshi / Polymarket access via the `web` toolset isn't reliable enough to produce trustworthy memos. Re-enable by restoring Phase 3 in `skills/basket-builder/SKILL.md`.
+- `gmoney:risk` — receives the thesis and the basket; emits a markdown critique ending in a Strong / Questionable / Weak verdict. (Previously took an optional hedge memo; while Phase 3 is disabled it reasons about gross unhedged risk.)
+- `gmoney:basket-builder` — orchestrator the agent loads first; sequences the other five active sub-skills and tracks progress via the `todo` toolset.
 
 ## Working in this repo
 
