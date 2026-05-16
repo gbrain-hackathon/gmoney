@@ -70,7 +70,7 @@ For each of `gmoney-analyst`, `gmoney-quant`, `gmoney-macro`:
 
 You may run these conceptually in parallel, but emit the three reports in a single message so the user sees the research block at once. If you cannot answer a section confidently from training data, say so in that section rather than fabricating — the PM and risk steps depend on honest signal.
 
-After emitting the three reports to the user, persist each as a separate GBrain page using the template at `docs/gbrain/schemas/research_report.template.md`. For each agent in `[analyst, quant, macro]`, prepend frontmatter (`type: research_report`, `thesis_slug`, `run_id`, `agent`, `created`, `tickers_mentioned` extracted from the report body) to the unmodified skill output, then:
+After emitting the three reports to the user, persist each as a separate GBrain page using the template at `docs/gbrain/schemas/research_report.template.md`. For each agent in `[analyst, quant, macro]`, prepend frontmatter (`type: research_report`, `thesis_slug`, `run_id`, `agent`, `created`, `tickers_mentioned` extracted from the report body, `sources_count` = number of URLs cited in the report) to the unmodified skill output, then:
 
 ```
 gbrain.put(slug=f"research/{slug}/{run_id}/{agent}", content=<frontmatter + report body>)
@@ -85,7 +85,7 @@ Load `gmoney-pm` via `skill_view`. Pass it:
 
 The `gmoney-pm` skill returns a single fenced JSON code block (positions + narrative). Parse it. If parsing fails or weights don't sum to 100, ask the PM to repair its own output once before falling back to a plain-text basket.
 
-Persist the basket and run the citation gate **before showing the basket to the user**. Render the basket page using `docs/gbrain/schemas/basket.template.md` — frontmatter (`type: basket`, `thesis_slug`, `run_id`, `created`, `basket_count`, `tickers`, `total_weight`, `cash_weight`, `narrative_excerpt`, `gate_overridden: false`), then a rendered markdown table, then the PM JSON verbatim inside a fenced ```json block, then the PM narrative as prose.
+Persist the basket and run the citation gate **before showing the basket to the user**. Render the basket page using `docs/gbrain/schemas/basket.template.md` — frontmatter (`type: basket`, `thesis_slug`, `run_id`, `created`, `basket_count: 3`, `tickers`, `total_weight`, `cash_weight`, `narrative_excerpt`, `gate_overridden: false`), then a rendered markdown table (Ticker / Name / Weight), then for each of the 3 positions a full rendered memo (all six memo fields as separate subsections), then the PM JSON verbatim inside a fenced ```json block, then the PM narrative as prose.
 
 ```
 gbrain.put(slug=f"baskets/{slug}/{run_id}", content=<rendered basket page>)
@@ -107,7 +107,12 @@ If the gate fails, **do NOT show the basket to the user yet**. Present the faili
 - (b) Re-run the affected research skill with a hint about the ticker.
 - (c) Override and show anyway. Persist the basket page again with `gate_overridden: true` in frontmatter and a banner in the rendered output noting which positions are unsupported.
 
-Default recommendation when asking is (a). After the gate passes (or is overridden), render the basket to the user as a markdown table (Ticker / Name / Weight / Rationale) followed by the narrative.
+Default recommendation when asking is (a). After the gate passes (or is overridden), render the basket to the user as follows:
+1. A summary table: Ticker | Name | Weight
+2. For each of the 3 positions, a full investment memo under a heading `### Idea N — [Ticker] [Name] ([Weight]%)`, with subsections for each memo field: Thesis Fit, Fundamental Case, Quant Signals, Macro Context, Catalysts, Key Risks.
+3. The PM narrative under `## Basket narrative`.
+
+Do not truncate or summarize the memo fields — emit them verbatim from the PM JSON.
 
 ### Phase 3 — Critique (risk officer)
 Load `gmoney-risk` via `skill_view`. Pass it the canonical thesis plus the basket (narrative + position list). Emit its markdown report verbatim under a `## Risk critique` heading.
