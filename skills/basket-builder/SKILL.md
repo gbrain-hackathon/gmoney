@@ -16,7 +16,7 @@ metadata:
 
 # gmoney — Investment Basket Builder
 
-Use this skill when a user submits an **investment thesis** and wants a tradeable basket plus a red-team critique. It orchestrates five sub-skills end-to-end:
+Use this skill when a user submits an **investment thesis** and wants a tradeable long-only basket plus a red-team critique and a final confidence-scored recommendation. It orchestrates five sub-skills end-to-end:
 
 1. `gmoney:analyst` — name companies and catalysts tied to the thesis
 2. `gmoney:quant` — factor mapping and screened candidates
@@ -123,19 +123,54 @@ Persist the critique to GBrain using `docs/gbrain/schemas/critique.template.md`.
 gbrain.put(slug=f"critiques/{slug}/{run_id}", content=<frontmatter + critique body>)
 ```
 
-### Phase 4 — Final summary
+### Phase 4 — Confidence Score
+
+After the risk critique is in hand, compute a **Confidence Score** out of 100 by scoring five components. Score each component yourself based on the actual outputs from Phases 1–3:
+
+| Component | Max pts | How to score |
+|---|---|---|
+| Analyst research quality | 25 | Sourcing depth, specificity of company exposures, number of verified catalysts. 20–25 = multiple primary sources, specific financials cited; 10–19 = some gaps or estimates; 0–9 = thin, generic, or mostly unverified |
+| Quant factor alignment | 20 | How cleanly the top positions fit the factor screen. 16–20 = strong multi-factor fit, reasonable valuations; 8–15 = mixed signals or stretched multiples; 0–7 = factors contradict the thesis or data is thin |
+| Macro tailwinds | 20 | How supportive the current regime is. 16–20 = rate path, growth regime, and sector rotation all align; 8–15 = mixed — some headwinds; 0–7 = macro regime is outright hostile to the thesis |
+| Basket coherence | 15 | Distinct sub-themes, appropriate concentration, no obvious redundancy. 12–15 = three clearly differentiated ideas; 6–11 = some overlap or construction issues; 0–5 = basket is poorly constructed for the thesis |
+| Risk verdict | 20 | Copy directly from the `Risk Score: XX/20` line in the risk report |
+
+Sum all five components. Then:
+
+- **75–100**: **HIGH CONVICTION — BUY**
+- **55–74**: **MODERATE CONVICTION — CAUTIOUS BUY**
+- **35–54**: **LOW CONVICTION — WATCH**
+- **0–34**: **INSUFFICIENT EVIDENCE — PASS**
+
+### Phase 5 — Final summary
 
 If the new evidence materially shifts the thesis itself (not just sizing), rewrite the **Compiled truth** section of `theses/<slug>` and re-put the page. Always append exactly one timeline entry to that page:
 
 ```
-- <YYYY-MM-DD>: run <run_id> → basket <N> names, risk verdict <Strong|Questionable|Weak>, links [[baskets/<slug>/<run_id>]] [[critiques/<slug>/<run_id>]]
+- <YYYY-MM-DD>: run <run_id> → basket <N> names, risk verdict <Strong|Questionable|Weak>, confidence <score>/100, links [[baskets/<slug>/<run_id>]] [[critiques/<slug>/<run_id>]]
 ```
 
-Then close with a 2–3 sentence wrap-up to the user: thesis, basket headline (e.g., "10 names, core in X and Y"), and risk verdict (Strong / Questionable / Weak). Nothing more.
+Close with the **Final Recommendation block** — this is the last thing the user sees:
+
+```
+## Final Recommendation
+
+**[RATING] — [score]/100**
+
+**Thesis**: [one sentence]
+**Basket**: [Ticker1] ([weight]%), [Ticker2] ([weight]%), [Ticker3] ([weight]%)
+**Risk verdict**: [Strong | Questionable | Weak]
+
+**Why this score**: [2–3 sentences: what drove the score up, what held it back]
+**Key watch item**: [the single most important thing to monitor that could change this rating]
+```
+
+Nothing else after this block. Do not add caveats, disclaimers, or additional commentary.
 
 ## Style guidelines
 
 - The five sub-skills do the thinking. Your job is sequencing, hand-off, and presentation — do not paraphrase their output or inject your own analysis.
 - Preserve every section heading from each sub-skill report. Users may scan, not read.
 - If any phase produces obviously thin output (one sentence per section, generic platitudes), say so in the final summary rather than dressing it up.
-- This is decision-support, not a recommendation. Never write "you should buy" or "I recommend" — write "the basket expresses" / "the risk officer's verdict is".
+- This is a long-only portfolio. Never suggest a short position, a pair trade, or an inverse ETF at any point in the pipeline.
+- The Final Recommendation block is the one place you give a direct rating. Be crisp and honest — a LOW CONVICTION or PASS is not a failure, it is useful information.

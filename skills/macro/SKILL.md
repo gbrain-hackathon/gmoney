@@ -46,14 +46,14 @@ List 3–5 specific macro indicators to watch. For each, state the **current liv
 - Source citation (URL + access date)
 
 ### 3. Sector and geography rotation
-- Which sectors should outperform under the thesis regime (and why)
-- Which sectors should underperform
-- Which countries / regions are exposed long, which are exposed short
-- Be explicit about sector ETFs or country ETFs that express the view (XLK, XLE, EWJ, EWZ, etc.)
+- Which sectors to overweight under the thesis regime (and why)
+- Which sectors to underweight or avoid (but not short) — explain the macro headwind
+- Which countries / regions offer the best long exposure to the thesis
+- Be explicit about sector ETFs or country ETFs that express the long view (XLK, XLE, EWJ, EWZ, etc.) — long-only vehicles only, no inverse ETFs
 
 ### 4. Currency and rates
-- FX pairs that should move with the thesis (with direction and current level, sourced)
-- Rate trades that express it (long duration, short duration, curve steepener/flattener)
+- Which currencies strengthen under the thesis regime (informational context for equity exposures — e.g., "USD strength benefits domestically-focused names, hurts exporters")
+- Rate environment implications: is the thesis helped by falling rates (growth/duration) or rising rates (value/financials)? State the current rate level and what direction is needed for the thesis to hold. Long-duration ETFs (e.g., TLT) are acceptable vehicles if the thesis warrants fixed-income exposure; no short-rate or inverse instruments.
 
 ### 5. What breaks the thesis from a macro angle
 The 2–3 macro shifts that would invalidate the thesis even if the micro story is right. Tie each risk to a current data point — e.g., "thesis assumes Fed cuts; current market pricing implies only 1 cut in 2025 [CME FedWatch, date, URL]."
