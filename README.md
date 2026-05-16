@@ -1,6 +1,6 @@
 # gmoney — Hermes plugin
 
-[![Hermes plugin](https://img.shields.io/badge/Hermes-plugin-D4AF37?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZiI+PHBhdGggZD0iTTEyIDJMMyA3djEwbDkgNSA5LTVWN3oiLz48L3N2Zz4=)](#install)
+[![Install with Hermes](https://img.shields.io/badge/hermes%20plugins%20install-gbrain--hackathon%2Fgmoney-D4AF37?style=for-the-badge&logo=github)](#install)
 
 Thesis-driven investment basket builder, packaged as a [Hermes Agent](https://github.com/NousResearch/hermes-agent) plugin. The user submits a worldview; the agent orchestrates analyst, quant, and macro researchers, a portfolio manager that builds a basket, and a risk officer that red-teams it.
 
@@ -23,9 +23,9 @@ No application code. Each `SKILL.md` is a Hermes skill (frontmatter + body). The
 ## Install
 
 ```bash
-hermes plugins install <owner>/<repo>     # GitHub shorthand
+hermes plugins install gbrain-hackathon/gmoney     # GitHub shorthand
 # or
-hermes plugins install https://github.com/<owner>/<repo>.git
+hermes plugins install https://github.com/gbrain-hackathon/gmoney.git
 ```
 
 Hermes shallow-clones the repo into `~/.hermes/plugins/gmoney/`, runs `register(ctx)`, and the six skills become available via `skill_view`.
