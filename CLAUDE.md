@@ -4,44 +4,42 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-The **gmoney** skill bundle for [Hermes Agent](https://github.com/NousResearch/hermes-agent), under `skills/gmoney/`. No application code, no package manager, no build step — except a small Python install script. Every skill is markdown plus a YAML profile sidecar. The Hermes deployment is consumed downstream (see README for installation).
+The **gmoney** plugin for [Hermes Agent](https://github.com/NousResearch/hermes-agent). Six investment-research skills registered under the `gmoney:` namespace. No application code, no package manager, no build step — just markdown skills and a thin Python `register()` hook.
 
 ## Layout
 
 ```
-hermes.yaml                 # bundle manifest (canonical descriptor)
-scripts/install.py          # installer — wires skills_root into a Hermes config
-skills/gmoney/
-  DESCRIPTION.md            # category descriptor
+plugin.yaml             # Hermes plugin manifest (name, version, kind)
+__init__.py             # def register(ctx) — calls ctx.register_skill for each skill
+skills/
   <skill>/
-    SKILL.md                # frontmatter + prompt body (the actual skill)
-    profile.yaml            # per-role tuning knobs (model, reasoning, etc.)
+    SKILL.md            # YAML frontmatter + prompt body
 ```
 
-## Skill structure
+## Plugin contract
 
-Hermes skills are directory bundles, not flat files.
+Hermes plugins live at `~/.hermes/plugins/<plugin_name>/` once installed (`hermes plugins install <repo>`). Hermes imports `__init__.py`, calls `register(ctx)`, and each `ctx.register_skill(name, path, description)` exposes the skill as `gmoney:<name>` via `skill_view`.
 
-- `SKILL.md` — YAML frontmatter (`name`, `title`, `description`, `version`, `metadata.hermes.{tags, category, related_skills, requires_toolsets}`) followed by the prompt body.
-- `profile.yaml` — sidecar with `model`, `provider`, `reasoning_effort`, `max_tokens`, `toolsets`, `notes`. Hermes does NOT currently apply these per-skill; they document intent and are surfaced by `scripts/install.py --print-profiles`. Treat them as the recommended runtime settings for each role.
-- Category dirs (`skills/gmoney/`) have a `DESCRIPTION.md` with just a `description` field.
+- `plugin.yaml` — `name`, `version`, `description`, `author`, `kind`, `platforms`. Loaded by the plugin manager.
+- `__init__.py` — registers six skills (`analyst`, `quant`, `macro`, `pm`, `risk`, `basket-builder`). Descriptions are pulled out of each `SKILL.md` frontmatter so there's a single source of truth.
+- `SKILL.md` — YAML frontmatter (`name`, `title`, `description`, `version`, `metadata.hermes.{tags, category, related_skills, requires_toolsets}`) followed by the prompt body. `name` is the unqualified half of `gmoney:<name>`.
 
 ## The pipeline
 
-- `gmoney-analyst`, `gmoney-quant`, `gmoney-macro` — three independent research roles, each producing a markdown report from a thesis.
-- `gmoney-pm` — receives all three reports plus the thesis; emits a single fenced JSON code block (positions + narrative). The schema is in `gmoney-pm/SKILL.md`.
-- `gmoney-risk` — receives the thesis and the basket; emits a markdown critique ending in a Strong / Questionable / Weak verdict.
-- `gmoney-basket-builder` — meta-skill the agent loads first; sequences the other five and tracks progress via the `todo` toolset.
+- `gmoney:analyst`, `gmoney:quant`, `gmoney:macro` — three independent research roles, each producing a markdown report from a thesis.
+- `gmoney:pm` — receives all three reports plus the thesis; emits a single fenced JSON code block (positions + narrative). Schema is in `skills/pm/SKILL.md`.
+- `gmoney:risk` — receives the thesis and the basket; emits a markdown critique ending in a Strong / Questionable / Weak verdict.
+- `gmoney:basket-builder` — orchestrator the agent loads first; sequences the other five and tracks progress via the `todo` toolset.
 
 ## Working in this repo
 
-- **Editing a skill's behavior is editing `SKILL.md`.** Preserve the frontmatter — `name` must match the leaf directory, and `related_skills` cross-references should stay consistent across the bundle.
-- **Tuning a skill's runtime settings is editing `profile.yaml`.** Keep these separate from `SKILL.md` so the prompt and the tuning knobs evolve independently.
-- **Adding a skill** means a new `skills/gmoney/gmoney-<name>/SKILL.md` + `profile.yaml`, an entry in `hermes.yaml`, an update to `gmoney-basket-builder/SKILL.md` if the new skill is part of the pipeline, and updates to every other skill's `related_skills`.
-- **`hermes.yaml`** is the manifest. It's read by `scripts/install.py` and serves as the canonical pipeline / install descriptor. Hermes itself does not read it.
-- **No tests / no lint / no build.** Validation is running `python3 scripts/install.py --print-profiles` (smoke-tests YAML parsing) plus running the bundle through Hermes.
-- **Naming**: every skill in this bundle is prefixed `gmoney-` so it's unambiguous when the agent searches across categories. Leaf directory name must equal `metadata.hermes.name`.
+- **Editing a skill is editing `SKILL.md`.** Preserve the frontmatter — `name` must match the leaf directory. Keep `related_skills` consistent across the bundle.
+- **Adding a skill** means a new `skills/<name>/SKILL.md`, appending the name to the `SKILLS` list in `__init__.py`, updating `basket-builder/SKILL.md` if the new skill belongs in the pipeline, and updating every other skill's `related_skills`.
+- **Pushing updates to a live install**: `hermes plugins update gmoney` runs `git pull --ff-only` in `~/.hermes/plugins/gmoney/`. Hermes re-reads `SKILL.md` on each invocation, so prompt-body edits land on the next call. New or removed skills require `/reload-skills` (and a plugin reload for the `__init__.py` change to take effect).
+- **No tests / no lint / no build.** Validation is `python3 -c "import sys; sys.path.insert(0, '.'); import __init__"` to confirm the module imports, plus running the plugin through Hermes.
+- **Naming**: skills are namespaced as `gmoney:<name>`. Leaf directory name must equal the `name:` in `SKILL.md` frontmatter and the entry in `__init__.py`'s `SKILLS` list.
 
 ## What's no longer here
 
-Earlier git history has a Next.js orchestrator that called Anthropic directly via `lib/agents/*` and persisted theses to `data/theses/*.json`. That entire stack was removed once Hermes became the only consumer — git history is the recovery path if it's needed again.
+- The pre-plugin layout had `hermes.yaml` (bundle manifest), `scripts/install.py` (external_dirs installer), `skills/gmoney/DESCRIPTION.md` (category descriptor), and a `profile.yaml` per skill capturing recommended model / reasoning / toolsets. Hermes didn't apply per-skill profiles, so they were doc-only and have been removed — git history has them if needed.
+- Earlier git history has a Next.js orchestrator that called Anthropic directly via `lib/agents/*` and persisted theses to `data/theses/*.json`. Removed once Hermes became the only consumer.

@@ -11,7 +11,7 @@ mkdir -p brain/theses brain/research brain/baskets brain/critiques
 
 ## Per-thesis flow
 
-The orchestrator (`gmoney-basket-builder`) runs five phases. After each phase, you (or the operator running Hermes) run one `gbrain put` command to persist the output. This is the minimum-touch path.
+The orchestrator (`gmoney:basket-builder`) runs five phases. After each phase, you (or the operator running Hermes) run one `gbrain put` command to persist the output. This is the minimum-touch path.
 
 ### Setup: pick a slug
 

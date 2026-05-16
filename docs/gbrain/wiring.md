@@ -1,6 +1,6 @@
 # Wiring: proposed orchestrator changes
 
-This is the **delta** to apply to `skills/gmoney/gmoney-basket-builder/SKILL.md` once you want the orchestrator to persist to GBrain automatically. Until then, follow `operational.md` (manual writes between phases).
+This is the **delta** to apply to `skills/basket-builder/SKILL.md` once you want the orchestrator to persist to GBrain automatically. Until then, follow `operational.md` (manual writes between phases).
 
 This file does not modify any skills. It documents the change so you can apply it cleanly when ready.
 
@@ -11,7 +11,7 @@ This file does not modify any skills. It documents the change so you can apply i
 
 ## Frontmatter change
 
-In `skills/gmoney/gmoney-basket-builder/SKILL.md`, change:
+In `skills/basket-builder/SKILL.md`, change:
 
 ```yaml
 requires_toolsets: [skills, web, todo]

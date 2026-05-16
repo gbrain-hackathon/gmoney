@@ -20,7 +20,7 @@ tags: [thesis, ai, services]
 
 # Compiled truth
 
-One paragraph, plain English, the current best statement of the worldview. This gets *rewritten* (not appended to) every time `gmoney-pm` decides the thesis itself needs updating. The fact that it gets overwritten is the point — it's the live distillation, not a log.
+One paragraph, plain English, the current best statement of the worldview. This gets *rewritten* (not appended to) every time `gmoney:pm` decides the thesis itself needs updating. The fact that it gets overwritten is the point — it's the live distillation, not a log.
 
 Edge framing: this is a **worldview synthesis** edge, not an informational edge. We don't have faster access to data than anyone else. We claim that a disciplined, multi-agent reading of public evidence against a stated thesis produces a better-calibrated read than a generalist LLM with web search.
 

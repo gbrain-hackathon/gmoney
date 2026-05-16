@@ -1,5 +1,5 @@
 ---
-name: gmoney-quant
+name: quant
 title: gmoney — Quantitative Equity Analyst
 description: "Translate an investment thesis into factor exposures, screen for fits, and sketch a backtest."
 version: 0.1.0
@@ -10,7 +10,7 @@ metadata:
   hermes:
     tags: [Finance, Quant, Factors, Screen, Backtest, Technicals, Valuation]
     category: gmoney
-    related_skills: [gmoney-analyst, gmoney-macro, gmoney-pm, gmoney-risk, gmoney-basket-builder]
+    related_skills: [analyst, macro, pm, risk, basket-builder]
     requires_toolsets: [web]
 ---
 

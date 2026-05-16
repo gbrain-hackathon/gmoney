@@ -1,5 +1,5 @@
 ---
-name: gmoney-analyst
+name: analyst
 title: gmoney — Sell-Side Equity Analyst
 description: "Identify publicly traded companies tied to an investment thesis, with catalysts and disclosure risks."
 version: 0.1.0
@@ -10,7 +10,7 @@ metadata:
   hermes:
     tags: [Finance, Equity, Stocks, Investment, Tickers, Catalysts, Filings, Analyst]
     category: gmoney
-    related_skills: [gmoney-quant, gmoney-macro, gmoney-pm, gmoney-risk, gmoney-basket-builder]
+    related_skills: [quant, macro, pm, risk, basket-builder]
     requires_toolsets: [web]
 ---
 

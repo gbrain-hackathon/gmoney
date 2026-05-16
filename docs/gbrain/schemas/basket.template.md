@@ -55,4 +55,4 @@ Render the PM's `narrative` field as plain prose here for readability.
 
 ---
 
-- 2026-05-16: Basket built by gmoney-pm for run 2026-05-16T143000Z. Citation gate passed.
+- 2026-05-16: Basket built by gmoney:pm for run 2026-05-16T143000Z. Citation gate passed.

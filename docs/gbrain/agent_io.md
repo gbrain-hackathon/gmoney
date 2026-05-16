@@ -1,12 +1,12 @@
 # Agent I/O contracts (mapped to existing gmoney skills)
 
-How each existing skill's output maps to a GBrain page. Read alongside `schemas/`. The skill bodies under `skills/gmoney/` are unchanged — this doc describes what wraps them.
+How each existing skill's output maps to a GBrain page. Read alongside `schemas/`. The skill bodies under `skills/` are unchanged — this doc describes what wraps them.
 
-Inputs to every skill come from the orchestrator (`gmoney-basket-builder`). The canonical thesis sentence is passed verbatim to each.
+Inputs to every skill come from the orchestrator (`gmoney:basket-builder`). The canonical thesis sentence is passed verbatim to each.
 
 ---
 
-## gmoney-basket-builder (orchestrator)
+## gmoney:basket-builder (orchestrator)
 
 **What it does**: drives Phase 0 → Phase 4, persists each phase's artifact to GBrain (after `wiring.md` is applied), runs the citation gate before showing the basket.
 
@@ -22,7 +22,7 @@ Inputs to every skill come from the orchestrator (`gmoney-basket-builder`). The 
 
 ---
 
-## gmoney-analyst
+## gmoney:analyst
 
 **Skill output**: markdown report with 5 sections (thesis interpretation, candidate universe, catalysts, disclosure risks, notable absences). No frontmatter.
 
@@ -45,7 +45,7 @@ tickers_mentioned: [<auto-extracted from "Candidate universe" section>]
 
 ---
 
-## gmoney-quant
+## gmoney:quant
 
 **Skill output**: markdown report with 5 sections (factor mapping, screen results, technicals, quantitative risks, backtest sketch).
 
@@ -64,7 +64,7 @@ factors: [<from factor mapping section, lightly parsed>]
 
 ---
 
-## gmoney-macro
+## gmoney:macro
 
 **Skill output**: markdown report with 5 sections (regime mapping, confirming indicators, sector/geo rotation, currency/rates, what breaks the thesis).
 
@@ -85,7 +85,7 @@ The `regime_tags` field is what the PM should consult when sizing cash weight.
 
 ---
 
-## gmoney-pm
+## gmoney:pm
 
 **Skill output**: a single fenced JSON code block matching the schema in its own SKILL.md (`positions`, each with `ticker / name / weight / rationale`, plus `narrative`).
 
@@ -106,7 +106,7 @@ The persisted page contains:
 
 ---
 
-## gmoney-risk
+## gmoney:risk
 
 **Skill output**: markdown report with 6 sections, ending in a Strong / Questionable / Weak verdict with 2–3 sentence justification.
 

@@ -13,7 +13,7 @@ tags: [research]
 ---
 
 <!--
-The body below is the markdown report exactly as the gmoney-analyst / gmoney-quant / gmoney-macro skill produced it.
+The body below is the markdown report exactly as the gmoney:analyst / gmoney:quant / gmoney:macro skill produced it.
 The orchestrator does NOT modify the body — it only prepends the frontmatter above and writes the whole thing to GBrain via `gbrain put`.
 
 Section structure varies by agent:

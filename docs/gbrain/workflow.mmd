@@ -1,7 +1,7 @@
 %% gmoney + GBrain workflow
 %% Render at https://mermaid.live or embed in any markdown viewer.
 flowchart TD
-    U([User submits investment thesis]) --> O[gmoney-basket-builder<br/>orchestrator]
+    U([User submits investment thesis]) --> O[gmoney:basket-builder<br/>orchestrator]
 
     O --> RS[Run setup:<br/>derive slug + run_id]
     RS --> PR{gbrain.get<br/>theses/&lt;slug&gt;<br/>exists?}
@@ -12,9 +12,9 @@ flowchart TD
     P0[Phase 0: Capture thesis] --> P0W[(gbrain.put<br/>theses/&lt;slug&gt;)]
 
     P0W --> P1[Phase 1: Research fan-out]
-    P1 --> A[gmoney-analyst]
-    P1 --> Q[gmoney-quant]
-    P1 --> M[gmoney-macro]
+    P1 --> A[gmoney:analyst]
+    P1 --> Q[gmoney:quant]
+    P1 --> M[gmoney:macro]
     A --> P1Wa[(gbrain.put<br/>research/&lt;slug&gt;/&lt;run_id&gt;/analyst)]
     Q --> P1Wq[(gbrain.put<br/>research/&lt;slug&gt;/&lt;run_id&gt;/quant)]
     M --> P1Wm[(gbrain.put<br/>research/&lt;slug&gt;/&lt;run_id&gt;/macro)]
@@ -27,7 +27,7 @@ flowchart TD
     P1Wq --> P2
     P1Wm --> P2
 
-    P2[Phase 2: PM synthesis] --> PM[gmoney-pm<br/>emits fenced JSON]
+    P2[Phase 2: PM synthesis] --> PM[gmoney:pm<br/>emits fenced JSON]
     PM --> P2W[(gbrain.put<br/>baskets/&lt;slug&gt;/&lt;run_id&gt;)]
     P2W --> CG{Citation gate:<br/>each ticker found<br/>in any research report?}
     CG -->|FAIL| OPT[Ask user:<br/>a drop & reweight<br/>b re-research ticker<br/>c override anyway]
@@ -37,7 +37,7 @@ flowchart TD
     CG -->|PASS| SHOW[Show basket to user]
 
     SHOW --> P3[Phase 3: Risk critique]
-    P3 --> R[gmoney-risk<br/>ends with verdict]
+    P3 --> R[gmoney:risk<br/>ends with verdict]
     R --> P3W[(gbrain.put<br/>critiques/&lt;slug&gt;/&lt;run_id&gt;<br/>verdict parsed)]
 
     P3W --> P4[Phase 4: Wrap-up]

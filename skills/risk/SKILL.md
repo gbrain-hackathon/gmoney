@@ -1,5 +1,5 @@
 ---
-name: gmoney-risk
+name: risk
 title: gmoney — Risk Officer
 description: "Red-team a proposed basket — counter-thesis, concentration, tail risks, thesis killers, liquidity, verdict."
 version: 0.1.0
@@ -10,7 +10,7 @@ metadata:
   hermes:
     tags: [Finance, Risk, RedTeam, Critique, Concentration, Liquidity, TailRisk]
     category: gmoney
-    related_skills: [gmoney-analyst, gmoney-quant, gmoney-macro, gmoney-pm, gmoney-basket-builder]
+    related_skills: [analyst, quant, macro, pm, basket-builder]
     requires_toolsets: []
 ---
 

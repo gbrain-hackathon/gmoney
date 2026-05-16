@@ -7,9 +7,9 @@ How to persist gmoney runs into [GBrain](https://github.com/garrytan/gbrain) so:
 - `companies/<ticker>` and `themes/<slug>` pages get auto-created and auto-linked by GBrain's entity extractor as you run more theses.
 - The doc's "what changed since last week" pattern is free: each run is a dated page under `runs/<thesis>/<run_id>`.
 
-This subtree **does not modify** the skill bundle under `../../skills/gmoney/`. It is additive:
+This subtree **does not modify** the skill bundle under `../../skills/`. It is additive:
 
-- Operational: there are two ways to use it. Manual (`operational.md`) is what works *today* without touching any skill. Automatic (`wiring.md`) is a proposed diff to `gmoney-basket-builder/SKILL.md` that you apply when you're ready to have the orchestrator persist by itself.
+- Operational: there are two ways to use it. Manual (`operational.md`) is what works *today* without touching any skill. Automatic (`wiring.md`) is a proposed diff to `basket-builder/SKILL.md` that you apply when you're ready to have the orchestrator persist by itself.
 - Schemas: page templates the orchestrator writes (or you write manually) at each phase.
 - Citation gate: a tiny Python check that verifies every basket position has at least one supporting research page in the brain. Hard-fail before the basket is shown.
 

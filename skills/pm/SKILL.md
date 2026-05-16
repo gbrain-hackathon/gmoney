@@ -1,5 +1,5 @@
 ---
-name: gmoney-pm
+name: pm
 title: gmoney — Portfolio Manager
 description: "Synthesize analyst / quant / macro reports into a concrete tradeable basket with weights and rationale."
 version: 0.1.0
@@ -10,7 +10,7 @@ metadata:
   hermes:
     tags: [Finance, Portfolio, Basket, Weights, Construction, Synthesis]
     category: gmoney
-    related_skills: [gmoney-analyst, gmoney-quant, gmoney-macro, gmoney-risk, gmoney-basket-builder]
+    related_skills: [analyst, quant, macro, risk, basket-builder]
     requires_toolsets: []
 ---
 

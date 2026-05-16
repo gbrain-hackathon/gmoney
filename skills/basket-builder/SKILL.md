@@ -1,5 +1,5 @@
 ---
-name: gmoney-basket-builder
+name: basket-builder
 title: gmoney — Investment Basket Builder (Orchestrator)
 description: "Drive the full thesis → basket pipeline: analyst + quant + macro research, PM synthesis, risk red-team."
 version: 0.1.0
@@ -10,7 +10,7 @@ metadata:
   hermes:
     tags: [Finance, Pipeline, Orchestrator, Basket, Thesis, Investment]
     category: gmoney
-    related_skills: [gmoney-analyst, gmoney-quant, gmoney-macro, gmoney-pm, gmoney-risk]
+    related_skills: [analyst, quant, macro, pm, risk]
     requires_toolsets: [skills, web, todo, gbrain]
 ---
 
@@ -18,11 +18,11 @@ metadata:
 
 Use this skill when a user submits an **investment thesis** and wants a tradeable basket plus a red-team critique. It orchestrates five sub-skills end-to-end:
 
-1. `gmoney-analyst` — name companies and catalysts tied to the thesis
-2. `gmoney-quant` — factor mapping and screened candidates
-3. `gmoney-macro` — regime fit and sector/FX/rate expression
-4. `gmoney-pm` — synthesize the three reports into a JSON basket
-5. `gmoney-risk` — red-team the basket
+1. `gmoney:analyst` — name companies and catalysts tied to the thesis
+2. `gmoney:quant` — factor mapping and screened candidates
+3. `gmoney:macro` — regime fit and sector/FX/rate expression
+4. `gmoney:pm` — synthesize the three reports into a JSON basket
+5. `gmoney:risk` — red-team the basket
 
 ## When to invoke
 
@@ -63,7 +63,7 @@ gbrain.put(slug=f"theses/{slug}", content=<rendered thesis page>)
 If you read a prior thesis page in Run setup and the user said "update in place", **do NOT overwrite the timeline section** — keep all prior dated entries. Append exactly one new timeline entry: `- <YYYY-MM-DD>: run <run_id> started`.
 
 ### Phase 1 — Research (analyst, quant, macro)
-For each of `gmoney-analyst`, `gmoney-quant`, `gmoney-macro`:
+For each of `gmoney:analyst`, `gmoney:quant`, `gmoney:macro`:
 1. Load the skill via `skill_view`.
 2. Follow its instructions for the canonical thesis.
 3. Capture the full markdown output. Label it clearly (e.g., `### ANALYST report`).
@@ -79,11 +79,11 @@ gbrain.put(slug=f"research/{slug}/{run_id}/{agent}", content=<frontmatter + repo
 GBrain's auto-link extractor will create or update `companies/<TICKER>` pages from every cashtag in the reports on each put — you do not handle that.
 
 ### Phase 2 — Synthesis (portfolio manager)
-Load `gmoney-pm` via `skill_view`. Pass it:
+Load `gmoney:pm` via `skill_view`. Pass it:
 - The canonical thesis
 - All three analyst reports concatenated, each prefixed with `### <AGENT> report`
 
-The `gmoney-pm` skill returns a single fenced JSON code block (positions + narrative). Parse it. If parsing fails or weights don't sum to 100, ask the PM to repair its own output once before falling back to a plain-text basket.
+The `gmoney:pm` skill returns a single fenced JSON code block (positions + narrative). Parse it. If parsing fails or weights don't sum to 100, ask the PM to repair its own output once before falling back to a plain-text basket.
 
 Persist the basket and run the citation gate **before showing the basket to the user**. Render the basket page using `docs/gbrain/schemas/basket.template.md` — frontmatter (`type: basket`, `thesis_slug`, `run_id`, `created`, `basket_count: 3`, `tickers`, `total_weight`, `cash_weight`, `narrative_excerpt`, `gate_overridden: false`), then a rendered markdown table (Ticker / Name / Weight), then for each of the 3 positions a full rendered memo (all six memo fields as separate subsections), then the PM JSON verbatim inside a fenced ```json block, then the PM narrative as prose.
 
@@ -115,7 +115,7 @@ Default recommendation when asking is (a). After the gate passes (or is overridd
 Do not truncate or summarize the memo fields — emit them verbatim from the PM JSON.
 
 ### Phase 3 — Critique (risk officer)
-Load `gmoney-risk` via `skill_view`. Pass it the canonical thesis plus the basket (narrative + position list). Emit its markdown report verbatim under a `## Risk critique` heading.
+Load `gmoney:risk` via `skill_view`. Pass it the canonical thesis plus the basket (narrative + position list). Emit its markdown report verbatim under a `## Risk critique` heading.
 
 Persist the critique to GBrain using `docs/gbrain/schemas/critique.template.md`. Parse the verdict from the final paragraph by regex matching `\b(Strong|Questionable|Weak)\b`; if none matches, default to `Questionable` and surface the parse failure as a note in the final summary. Prepend frontmatter (`type: critique`, `thesis_slug`, `run_id`, `created`, `basket_ref: baskets/<slug>/<run_id>`, `verdict`, `flags_count` if you can count them) to the unmodified skill output, then:
 
