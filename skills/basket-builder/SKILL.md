@@ -58,7 +58,7 @@ Restate the thesis back to the user in one sentence and confirm. Persist the can
 
 Then ask the user to confirm **one framing question** before running research:
 
-> "Is this a **sector trade** (you believe software broadly wins, and the index — e.g., IGV — is a fine vehicle) or a **company-specific trade** (you believe specific names have disproportionate upside vs. the sector because they haven't yet realized AI efficiency gains their peers already have)?"
+> "Is this a **sector trade** (you believe the sector broadly wins, and the index is a fine vehicle) or a **company-specific trade** (you believe specific names have disproportionate upside vs. the sector because they haven't yet realized what the thesis predicts, while peers already have)?"
 
 If company-specific: ask which companies, if any, the user already has in mind as candidate laggards. Add these as `tickers_of_interest` in the thesis page.
 

@@ -58,7 +58,7 @@ For each of the top 3 names from your screen, construct the explicit earnings ca
 | Field | What to fill in |
 |---|---|
 | Current trailing/forward EPS | Sourced figure |
-| Peer-benchmarked margin expansion | How much margin could expand if AI efficiencies materialize — anchored to what comparable companies have already achieved (cite the peer and their before/after) |
+| Thesis-driven margin expansion | How much margin could expand if the thesis mechanism materializes — anchored to what comparable companies have already achieved (cite the peer and their before/after outcome) |
 | Target EPS (if expansion materializes) | Current EPS adjusted for the margin improvement |
 | Current P/E vs. 5-yr historical average P/E | Both figures sourced — is the stock cheap, fair, or expensive vs. its own history? |
 | Target P/E at which thesis is "fairly valued" | Your estimate with justification (reversion to historical average, sector mean, etc.) |
@@ -68,7 +68,7 @@ For each of the top 3 names from your screen, construct the explicit earnings ca
 
 If EPS is negative or the company is pre-profit, substitute a revenue or gross profit multiple and explain why it's the right yardstick.
 
-**The upside calculation is the thesis in quantitative form.** Names with the highest implied upside, grounded in realistic (peer-evidenced) efficiency assumptions, are the PM's best candidates.
+**The upside calculation is the thesis in quantitative form.** Names with the highest implied upside, grounded in realistic peer-evidenced assumptions tied to the thesis mechanism, are the PM's best candidates.
 
 ### 2b. Peer comp table
 Build a comparison table of 5–8 peer companies (same sector, similar growth profile) with these columns:

@@ -44,12 +44,12 @@ If company-specific, identify the **differentiating factor** — what makes cert
 If you cannot identify a compelling differentiating factor beyond "the sector is cheap," say so explicitly and recommend the index vehicle instead.
 
 ### 2a. Peer benchmarks (do this before naming candidates)
-Identify **2–3 companies in the same sector that have ALREADY realized AI-driven efficiency gains** — margin expansion or EPS acceleration attributable to headcount efficiency, AI tooling, or automation. For each peer:
-- Before/after gross margin or operating margin (specific quarters, sourced)
-- What specific efficiency initiative drove the gain (headcount reduction, AI tooling, infrastructure, etc.)
-- How long it took from initiative to visible margin impact
+Identify **2–3 companies in the same sector that have ALREADY demonstrated the mechanism the thesis predicts** — margin expansion, EPS acceleration, revenue re-rating, or whatever the thesis claims will happen. For each peer:
+- Before/after gross margin, operating margin, or revenue multiple (specific quarters, sourced)
+- What specific action or condition drove the outcome — tie it directly to the thesis mechanism, not a generic narrative
+- How long it took from that action/condition to visible financial impact
 
-These peers are the **evidence base** that the thesis is achievable. They are not necessarily investment candidates — the candidates are names that have *not yet* realized these gains but are positioned to.
+These peers are the **evidence base** that the thesis is achievable. They are not necessarily investment candidates — the candidates are names that have *not yet* demonstrated this outcome but are positioned to, with a clear reason why the same mechanism applies to them.
 
 ### 2b. Candidate universe
 Identify 5–10 publicly traded companies whose earnings (not just margins — also revenue sustainability) would benefit materially if the thesis plays out. Long-only — only include companies you would want to own. For each:
@@ -93,7 +93,7 @@ For the candidates, identify near-term events that could validate or invalidate 
 ### 7. Disclosure risks
 Material risks disclosed in recent 10-K/10-Q/8-K filings that could break the thesis. Cite the specific filing (company, form type, date filed, URL or SEC EDGAR link).
 
-**Required check — demand-side AI compression**: when the company's *customers* also adopt AI and reduce headcount or automate workflows, do they buy fewer software seats, reduce usage tiers, or renegotiate contracts? This is the mirror image of the efficiency thesis: if AI cuts costs for software companies, it also cuts costs for their customers — which may reduce the software revenue base. For each candidate, search for evidence of this risk: customer churn data, seat-count disclosures, usage-based revenue trends, or commentary from recent earnings calls about pricing pressure. If this risk is material, quantify its potential impact on revenue growth.
+**Required check — demand-side thesis compression**: the same mechanism the thesis predicts will benefit these companies may also affect their customers or the companies themselves in a contrary way. Ask: if the thesis mechanism plays out broadly, does it compress the revenue base for these companies, not just expand their margins? For each candidate, examine whether customers, competitors, or counterparties exposed to the same thesis dynamic would reduce demand, renegotiate contracts, or shift spend. Search for evidence: customer churn data, usage trends, pricing pressure commentary from recent earnings calls, or disclosures about customer behavior changes tied to the thesis dynamic. If this risk is material, quantify its potential impact on revenue growth.
 
 ### 8. Why not X?
 Companies that *look* like good longs on the thesis but aren't — and the specific reason (crowded, wrong segment, structural headwind, better alternatives exist). Helps the PM avoid false positives in the long book.
