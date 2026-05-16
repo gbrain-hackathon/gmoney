@@ -16,14 +16,14 @@ metadata:
 
 # gmoney — Investment Basket Builder
 
-Use this skill when a user submits an **investment thesis** and wants a tradeable long-only basket plus a prediction-market hedge memo, a red-team critique, and a final confidence-scored recommendation. It orchestrates six sub-skills end-to-end:
+Use this skill when a user submits an **investment thesis** and wants a tradeable long-only basket, an optional prediction-market hedge memo, a red-team critique, and a final confidence-scored recommendation. It orchestrates six sub-skills end-to-end:
 
 1. `gmoney:analyst` — name companies and catalysts tied to the thesis
 2. `gmoney:quant` — factor mapping and screened candidates
 3. `gmoney:macro` — regime fit and sector/FX/rate expression
 4. `gmoney:pm` — synthesize the three reports into a JSON basket
-5. `gmoney:hedger` — map basket exposures to live Kalshi / Polymarket contracts
-6. `gmoney:risk` — red-team the basket (now informed by the hedge memo)
+5. `gmoney:hedger` *(optional)* — map basket exposures to live Kalshi / Polymarket contracts
+6. `gmoney:risk` — red-team the basket
 
 ## When to invoke
 
@@ -36,7 +36,7 @@ If the user message is **not** a concrete thesis (e.g., "what stocks should I bu
 
 ## How to run the pipeline
 
-Track progress with the `todo` toolset so the user can see where you are. The six phases below are sequential — do not skip ahead.
+Track progress with the `todo` toolset so the user can see where you are. The phases below run in order; the three research sub-skills inside Phase 1 run **in parallel**, and Phase 3 is **optional**. Do not skip ahead past any required phase.
 
 Persistence: at every phase you write the artifact to GBrain via the `gbrain` toolset. Schemas live at `docs/gbrain/schemas/`. The wiring rationale is in `docs/gbrain/wiring.md` and `docs/gbrain/agent_io.md`. Read those if you are uncertain about field names or page layout.
 
@@ -63,13 +63,14 @@ gbrain.put(slug=f"theses/{slug}", content=<rendered thesis page>)
 
 If you read a prior thesis page in Run setup and the user said "update in place", **do NOT overwrite the timeline section** — keep all prior dated entries. Append exactly one new timeline entry: `- <YYYY-MM-DD>: run <run_id> started`.
 
-### Phase 1 — Research (analyst, quant, macro)
-For each of `gmoney:analyst`, `gmoney:quant`, `gmoney:macro`:
-1. Load the skill via `skill_view`.
-2. Follow its instructions for the canonical thesis.
-3. Capture the full markdown output. Label it clearly (e.g., `### ANALYST report`).
+### Phase 1 — Research (analyst, quant, macro) — run in parallel
 
-You may run these conceptually in parallel, but emit the three reports in a single message so the user sees the research block at once. If you cannot answer a section confidently from training data, say so in that section rather than fabricating — the PM and risk steps depend on honest signal.
+The three research sub-skills are independent and **must run concurrently**, not one after another.
+
+1. Dispatch `gmoney:analyst`, `gmoney:quant`, and `gmoney:macro` as three parallel worker invocations in a single tool-call batch — do not await one before starting the next. Each worker loads its skill via `skill_view`, follows the prompt against the canonical thesis verbatim, and returns the full markdown report.
+2. Wait for all three to return, then emit them together in a single message under labeled headings (`### ANALYST report`, `### QUANT report`, `### MACRO report`) so the user sees the research block at once.
+
+If a sub-skill cannot answer a section confidently from training data, it should say so in that section rather than fabricating — the PM and risk steps depend on honest signal.
 
 After emitting the three reports to the user, persist each as a separate GBrain page using the template at `docs/gbrain/schemas/research_report.template.md`. For each agent in `[analyst, quant, macro]`, prepend frontmatter (`type: research_report`, `thesis_slug`, `run_id`, `agent`, `created`, `tickers_mentioned` extracted from the report body, `sources_count` = number of URLs cited in the report) to the unmodified skill output, then:
 
@@ -115,8 +116,11 @@ Default recommendation when asking is (a). After the gate passes (or is overridd
 
 Do not truncate or summarize the memo fields — emit them verbatim from the PM JSON.
 
-### Phase 3 — Hedging (prediction-market hedger)
-Load `gmoney:hedger` via `skill_view`. Pass it:
+### Phase 3 — Hedging (prediction-market hedger) — optional
+
+This phase is **optional**. Skip it if the user explicitly opted out of hedge analysis, or if the thesis is purely single-name idiosyncratic with no event/macro surface that listed Kalshi / Polymarket contracts could plausibly cover. Otherwise, run it by default. If you skip, jump straight to Phase 4 without a hedge memo and note the skip in the Final Recommendation block.
+
+If running, load `gmoney:hedger` via `skill_view`. Pass it:
 - The canonical thesis
 - The full basket (PM JSON — positions + memos + narrative)
 - Optionally the macro report's "What breaks the thesis from a macro angle" section, since it surfaces hedgeable macro exposures the PM memos may not name explicitly
@@ -132,7 +136,7 @@ gbrain.put(slug=f"hedge_memos/{slug}/{run_id}", content=<frontmatter + memo body
 If the hedger reports zero hedgeable exposures (rare), still persist the memo so the risk officer can see the explicit "no listed contracts" rationale in §1.
 
 ### Phase 4 — Critique (risk officer)
-Load `gmoney:risk` via `skill_view`. Pass it the canonical thesis, the basket (narrative + position list), **and the hedge memo from Phase 3**. The risk officer treats hedged exposures distinctly from residual unhedged risk — surface this in the critique. Emit its markdown report verbatim under a `## Risk critique` heading.
+Load `gmoney:risk` via `skill_view`. Pass it the canonical thesis and the basket (narrative + position list). The hedge memo from Phase 3 is an **optional** input — pass it only if Phase 3 ran; otherwise omit it entirely. The risk skill treats hedged exposures distinctly from residual unhedged risk when a memo is provided, and reasons about gross risk when it isn't. Emit its markdown report verbatim under a `## Risk critique` heading.
 
 Persist the critique to GBrain using `docs/gbrain/schemas/critique.template.md`. Parse the verdict from the final paragraph by regex matching `\b(Strong|Questionable|Weak)\b`; if none matches, default to `Questionable` and surface the parse failure as a note in the final summary. Prepend frontmatter (`type: critique`, `thesis_slug`, `run_id`, `created`, `basket_ref: baskets/<slug>/<run_id>`, `verdict`, `flags_count` if you can count them) to the unmodified skill output, then:
 
@@ -142,7 +146,7 @@ gbrain.put(slug=f"critiques/{slug}/{run_id}", content=<frontmatter + critique bo
 
 ### Phase 5 — Confidence Score
 
-After the risk critique is in hand, compute a **Confidence Score** out of 100 by scoring five components. Score each component yourself based on the actual outputs from Phases 1–4. Hedge quality flows into the Risk component via the risk officer's residual-risk reasoning, so there is no separate hedge component:
+After the risk critique is in hand, compute a **Confidence Score** out of 100 by scoring five components. Score each component yourself based on the actual outputs from Phases 1–4. When Phase 3 ran, hedge quality flows into the Risk component via the risk officer's residual-risk reasoning; when it was skipped, the Risk component reflects gross risk only. Either way there is no separate hedge component:
 
 | Component | Max pts | How to score |
 |---|---|---|
@@ -150,7 +154,7 @@ After the risk critique is in hand, compute a **Confidence Score** out of 100 by
 | Quant factor alignment | 20 | How cleanly the top positions fit the factor screen. 16–20 = strong multi-factor fit, reasonable valuations; 8–15 = mixed signals or stretched multiples; 0–7 = factors contradict the thesis or data is thin |
 | Macro tailwinds | 20 | How supportive the current regime is. 16–20 = rate path, growth regime, and sector rotation all align; 8–15 = mixed — some headwinds; 0–7 = macro regime is outright hostile to the thesis |
 | Basket coherence | 15 | Distinct sub-themes, appropriate concentration, no obvious redundancy. 12–15 = three clearly differentiated ideas; 6–11 = some overlap or construction issues; 0–5 = basket is poorly constructed for the thesis |
-| Risk verdict (post-hedge) | 20 | Copy directly from the `Risk Score: XX/20` line in the risk report — this already factors in the hedge memo's coverage |
+| Risk verdict | 20 | Copy directly from the `Risk Score: XX/20` line in the risk report — when Phase 3 ran, this already factors in the hedge memo's coverage |
 
 Sum all five components. Then:
 
@@ -164,7 +168,7 @@ Sum all five components. Then:
 If the new evidence materially shifts the thesis itself (not just sizing), rewrite the **Compiled truth** section of `theses/<slug>` and re-put the page. Always append exactly one timeline entry to that page:
 
 ```
-- <YYYY-MM-DD>: run <run_id> → basket <N> names, hedge memo <C> contracts, risk verdict <Strong|Questionable|Weak>, confidence <score>/100, links [[baskets/<slug>/<run_id>]] [[hedge_memos/<slug>/<run_id>]] [[critiques/<slug>/<run_id>]]
+- <YYYY-MM-DD>: run <run_id> → basket <N> names, hedge <"<C> contracts" | "skipped">, risk verdict <Strong|Questionable|Weak>, confidence <score>/100, links [[baskets/<slug>/<run_id>]] [[hedge_memos/<slug>/<run_id>]] (omit if hedge skipped) [[critiques/<slug>/<run_id>]]
 ```
 
 Close with the **Final Recommendation block** — this is the last thing the user sees:
@@ -176,7 +180,7 @@ Close with the **Final Recommendation block** — this is the last thing the use
 
 **Thesis**: [one sentence]
 **Basket**: [Ticker1] ([weight]%), [Ticker2] ([weight]%), [Ticker3] ([weight]%)
-**Hedge**: [N contracts at ~X% premium, venues] or "no actionable hedges"
+**Hedge**: [N contracts at ~X% premium, venues], "no actionable hedges", or "skipped"
 **Risk verdict**: [Strong | Questionable | Weak]
 
 **Why this score**: [2–3 sentences: what drove the score up, what held it back]

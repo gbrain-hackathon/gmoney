@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-The **gmoney** plugin for [Hermes Agent](https://github.com/NousResearch/hermes-agent). Six investment-research skills registered under the `gmoney:` namespace. No application code, no package manager, no build step — just markdown skills and a thin Python `register()` hook.
+The **gmoney** plugin for [Hermes Agent](https://github.com/NousResearch/hermes-agent). Seven investment-research skills registered under the `gmoney:` namespace. No application code, no package manager, no build step — just markdown skills and a thin Python `register()` hook.
 
 ## Layout
 
@@ -21,15 +21,16 @@ skills/
 Hermes plugins live at `~/.hermes/plugins/<plugin_name>/` once installed (`hermes plugins install <repo>`). Hermes imports `__init__.py`, calls `register(ctx)`, and each `ctx.register_skill(name, path, description)` exposes the skill as `gmoney:<name>` via `skill_view`.
 
 - `plugin.yaml` — `name`, `version`, `description`, `author`, `kind`, `platforms`. Loaded by the plugin manager.
-- `__init__.py` — registers six skills (`analyst`, `quant`, `macro`, `pm`, `risk`, `basket-builder`). Descriptions are pulled out of each `SKILL.md` frontmatter so there's a single source of truth.
+- `__init__.py` — registers seven skills (`analyst`, `quant`, `macro`, `pm`, `hedger`, `risk`, `basket-builder`). Descriptions are pulled out of each `SKILL.md` frontmatter so there's a single source of truth.
 - `SKILL.md` — YAML frontmatter (`name`, `title`, `description`, `version`, `metadata.hermes.{tags, category, related_skills, requires_toolsets}`) followed by the prompt body. `name` is the unqualified half of `gmoney:<name>`.
 
 ## The pipeline
 
-- `gmoney:analyst`, `gmoney:quant`, `gmoney:macro` — three independent research roles, each producing a markdown report from a thesis.
+- `gmoney:analyst`, `gmoney:quant`, `gmoney:macro` — three independent research roles, each producing a markdown report from a thesis. The orchestrator dispatches them **in parallel**.
 - `gmoney:pm` — receives all three reports plus the thesis; emits a single fenced JSON code block (positions + narrative). Schema is in `skills/pm/SKILL.md`.
-- `gmoney:risk` — receives the thesis and the basket; emits a markdown critique ending in a Strong / Questionable / Weak verdict.
-- `gmoney:basket-builder` — orchestrator the agent loads first; sequences the other five and tracks progress via the `todo` toolset.
+- `gmoney:hedger` — **optional** phase. Receives the thesis and basket; queries Kalshi / Polymarket and returns a markdown hedge memo. The orchestrator may skip it (user opted out, or single-name idiosyncratic thesis with no hedge surface).
+- `gmoney:risk` — receives the thesis and the basket, plus the hedge memo *only if* the hedger phase ran; emits a markdown critique ending in a Strong / Questionable / Weak verdict.
+- `gmoney:basket-builder` — orchestrator the agent loads first; sequences the other six and tracks progress via the `todo` toolset.
 
 ## Working in this repo
 
