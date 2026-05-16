@@ -1,0 +1,57 @@
+%% gmoney + GBrain workflow
+%% Render at https://mermaid.live or embed in any markdown viewer.
+flowchart TD
+    U([User submits investment thesis]) --> O[gmoney-basket-builder<br/>orchestrator]
+
+    O --> RS[Run setup:<br/>derive slug + run_id]
+    RS --> PR{gbrain.get<br/>theses/&lt;slug&gt;<br/>exists?}
+    PR -->|Yes| ASK[Ask user:<br/>update in place<br/>or new slug?]
+    PR -->|No| P0
+    ASK --> P0
+
+    P0[Phase 0: Capture thesis] --> P0W[(gbrain.put<br/>theses/&lt;slug&gt;)]
+
+    P0W --> P1[Phase 1: Research fan-out]
+    P1 --> A[gmoney-analyst]
+    P1 --> Q[gmoney-quant]
+    P1 --> M[gmoney-macro]
+    A --> P1Wa[(gbrain.put<br/>research/&lt;slug&gt;/&lt;run_id&gt;/analyst)]
+    Q --> P1Wq[(gbrain.put<br/>research/&lt;slug&gt;/&lt;run_id&gt;/quant)]
+    M --> P1Wm[(gbrain.put<br/>research/&lt;slug&gt;/&lt;run_id&gt;/macro)]
+
+    P1Wa -.auto-link.-> AC[(companies/&lt;TICKER&gt;<br/>auto-created + linked)]
+    P1Wq -.auto-link.-> AC
+    P1Wm -.auto-link.-> AC
+
+    P1Wa --> P2
+    P1Wq --> P2
+    P1Wm --> P2
+
+    P2[Phase 2: PM synthesis] --> PM[gmoney-pm<br/>emits fenced JSON]
+    PM --> P2W[(gbrain.put<br/>baskets/&lt;slug&gt;/&lt;run_id&gt;)]
+    P2W --> CG{Citation gate:<br/>each ticker found<br/>in any research report?}
+    CG -->|FAIL| OPT[Ask user:<br/>a drop & reweight<br/>b re-research ticker<br/>c override anyway]
+    OPT -->|a or b| PM
+    OPT -->|c| P2WO[(re-put basket with<br/>gate_overridden: true)]
+    P2WO --> SHOW
+    CG -->|PASS| SHOW[Show basket to user]
+
+    SHOW --> P3[Phase 3: Risk critique]
+    P3 --> R[gmoney-risk<br/>ends with verdict]
+    R --> P3W[(gbrain.put<br/>critiques/&lt;slug&gt;/&lt;run_id&gt;<br/>verdict parsed)]
+
+    P3W --> P4[Phase 4: Wrap-up]
+    P4 --> P4U{thesis materially<br/>shifted?}
+    P4U -->|Yes| P4WR[(gbrain.put theses/&lt;slug&gt;<br/>rewrite compiled truth<br/>+ append timeline)]
+    P4U -->|No| P4WT[(gbrain.put theses/&lt;slug&gt;<br/>append timeline only)]
+    P4WR --> END([2-3 sentence summary<br/>+ verdict to user])
+    P4WT --> END
+
+    classDef brain fill:#eef,stroke:#669,stroke-width:1px;
+    classDef skill fill:#efe,stroke:#696,stroke-width:1px;
+    classDef phase fill:#fff,stroke:#666;
+    classDef gate fill:#fee,stroke:#966;
+    class P0W,P1Wa,P1Wq,P1Wm,P2W,P2WO,P3W,P4WR,P4WT,AC brain;
+    class A,Q,M,PM,R skill;
+    class P0,P1,P2,P3,P4 phase;
+    class CG,PR,P4U gate;
