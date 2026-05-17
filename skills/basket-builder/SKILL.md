@@ -100,7 +100,7 @@ Load `gmoney:pm` via `skill_view`. Pass it:
 
 The `gmoney:pm` skill returns a single fenced JSON code block (positions + narrative). Parse it. If parsing fails or weights don't sum to 100, ask the PM to repair its own output once before falling back to a plain-text basket.
 
-Persist the basket and run the citation gate **before showing the basket to the user**. Render the basket page using `docs/gbrain/schemas/basket.template.md` — frontmatter (`type: basket`, `thesis_slug`, `run_id`, `created`, `basket_count: 3`, `tickers`, `total_weight`, `cash_weight`, `narrative_excerpt`, `gate_overridden: false`), then a rendered markdown table (Ticker / Name / Weight), then for each of the 3 positions a full rendered memo (all six memo fields as separate subsections), then the PM JSON verbatim inside a fenced ```json block, then the PM narrative as prose.
+Persist the basket and run the citation gate **before showing the basket to the user**. Render the basket page using `docs/gbrain/schemas/basket.template.md` — frontmatter (`type: basket`, `thesis_slug`, `run_id`, `created`, `basket_mode` from the PM JSON, `basket_count` = number of positions in the PM JSON, `tickers`, `total_weight`, `cash_weight`, `narrative_excerpt`, `gate_overridden: false`), then a rendered markdown table (Ticker / Name / Weight), then for each of the 3 positions a full rendered memo (all six memo fields as separate subsections), then the PM JSON verbatim inside a fenced ```json block, then the PM narrative as prose.
 
 ```
 gbrain.put(slug=f"baskets/{slug}/{run_id}", content=<rendered basket page>)

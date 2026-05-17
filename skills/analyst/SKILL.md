@@ -43,7 +43,23 @@ If company-specific, identify the **differentiating factor** — what makes cert
 
 If you cannot identify a compelling differentiating factor beyond "the sector is cheap," say so explicitly and recommend the index vehicle instead.
 
-### 2a. Peer benchmarks (do this before naming candidates)
+### 2a. Universe construction (do this before naming candidates)
+
+Build a complete sector universe before applying any thesis filter — this prevents you from anchoring on well-known names and missing smaller or less-covered companies.
+
+1. From the thesis and your framing in Section 2, identify the relevant GICS sector(s) and sub-industry (e.g. "Software — Systems Software", "Semiconductors & Semiconductor Equipment").
+2. Determine a market cap floor appropriate to the thesis. Default: **$500M** unless the thesis explicitly targets small or micro caps.
+3. Retrieve the full sector listing from a screener. Try these in order until one returns a usable list:
+   - `https://stockanalysis.com/stocks/sector/<sector>/` — lists all companies with market cap, sorted descending
+   - `https://finviz.com/screener.ashx?v=111&f=sec_<sector>,cap_<tier>` — construct the URL from the GICS sector code and cap tier (`smallover`, `midover`, `largeover`)
+   - Fall back to a web search: `site:finviz.com OR site:stockanalysis.com <sector name> publicly traded companies market cap`
+4. Extract all tickers and company names that meet the market cap floor. Record the total count — this is your **raw universe**.
+5. Apply a quick binary thesis filter across the raw universe: thesis-exposed or not, based on each company's primary business description. This pass is fast — no deep research yet.
+6. Record how many companies survived the filter. Flag the raw universe size and filter survival rate in a note at the top of Section 2c so the PM and user understand the breadth of the screen.
+
+Everything in Section 2c must be drawn from this filtered universe, not from top-of-mind recall.
+
+### 2b. Peer benchmarks (do this before naming candidates)
 Identify **2–3 companies in the same sector that have ALREADY demonstrated the mechanism the thesis predicts** — margin expansion, EPS acceleration, revenue re-rating, or whatever the thesis claims will happen. For each peer:
 - Before/after gross margin, operating margin, or revenue multiple (specific quarters, sourced)
 - What specific action or condition drove the outcome — tie it directly to the thesis mechanism, not a generic narrative
@@ -51,7 +67,7 @@ Identify **2–3 companies in the same sector that have ALREADY demonstrated the
 
 These peers are the **evidence base** that the thesis is achievable. They are not necessarily investment candidates — the candidates are names that have *not yet* demonstrated this outcome but are positioned to, with a clear reason why the same mechanism applies to them.
 
-### 2b. Candidate universe
+### 2c. Candidate universe
 Identify 5–10 publicly traded companies whose earnings (not just margins — also revenue sustainability) would benefit materially if the thesis plays out. Long-only — only include companies you would want to own. For each:
 - Ticker and full company name
 - 2–3 sentence explanation of how this company benefits from the thesis, with specific revenue/margin/segment data from your research
