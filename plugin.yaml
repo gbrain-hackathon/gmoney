@@ -1,5 +1,5 @@
 name: gmoney
-version: 0.1.1
+version: 0.1.2
 description: |
   Multi-agent investment-thesis analysis. Analyst, quant, and macro
   researchers feed a portfolio manager that builds a basket; a risk
